@@ -32,10 +32,10 @@ class ForesAPI {
     return this;
   }
 
-  Future<ForesAPIResponse?> _request(Future request) async {
+  Future<APIResponse?> _request(Future request) async {
     try {
       Response response = await request;
-      return ForesAPIResponse(statusCode: response.statusCode!, data: response.data);
+      return APIResponse(statusCode: response.statusCode!, data: response.data);
     } on DioException catch (e) {
       if (e.response == null) {
         debugPrint(e.error.toString());
@@ -48,15 +48,24 @@ class ForesAPI {
         return null;
       }
 
-      return ForesAPIResponse(
+      return APIResponse(
         statusCode: e.response!.statusCode!,
         data: e.response!.data
       );
     }
   }
 
-  Future<ForesAPIResponse?> post() async {
+  Future<APIResponse?> get() async {
+    return await _request(_dio.get('/$_routes'));
+  } 
+  Future<APIResponse?> post() async {
     return await _request(_dio.post('/$_routes'));
+  }
+  Future<APIResponse?> put() async {
+    return await _request(_dio.put('/$_routes'));
+  } 
+  Future<APIResponse?> delete() async {
+    return await _request(_dio.delete('/$_routes'));
   } 
 
   String print() {
@@ -66,8 +75,8 @@ class ForesAPI {
   }
 }
 
-class ForesAPIResponse {
+class APIResponse {
   int statusCode;
   dynamic data;
-  ForesAPIResponse({required this.statusCode, required this.data});
+  APIResponse({required this.statusCode, required this.data});
 }
