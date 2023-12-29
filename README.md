@@ -12,29 +12,29 @@ To work with the package, you need to use the Form API class, which provides the
 
 First step:
 Init RequesterAPI 
-```
+```dart
 RequesterAPI.init(domain, accessToken, errorListener?)
 ```
 
 Second step:
 Add to chain your route
-```
+```dart
 .route(String route)
 ```
 
 Add body to your request if necessary
-```
+```dart
 .setBody(Map body)
 ```
 
 Add params to your request if necessary
-```
+```dart
 .setParams(String)
 ```
 
 Third step:
 Send request
-```
+```dart
 .get()
 .post()
 .put()
@@ -42,7 +42,7 @@ Send request
 ```
 
 If you want to look at the final query, you can output it
-```
+```dart
 .print()
 ```
 
@@ -50,7 +50,7 @@ If you want to look at the final query, you can output it
 
 Create an object and add route, and then call the request
 - From this example: 'https://example.com/user/profile"
-```
+```dart
 void routeAndGet() {
   RequesterAPI api = RequesterAPI.init(domain: 'https://example.com', userToken: 'asj88dfmya79yf72qtmftg2n8t6');
   api.route('user/profile').get();
@@ -59,7 +59,7 @@ void routeAndGet() {
 
 You can add the request body to the chain
 - From this example: 'https://example.com/user/profile"
-```
+```dart
 void routeAndBodyAndPost() {
   RequesterAPI api = RequesterAPI.init(domain: 'https://example.com', userToken: 'asj88dfmya79yf72qtmftg2n8t6');
   api.route('user/profile')
@@ -72,7 +72,7 @@ void routeAndBodyAndPost() {
 
 And if you need params, then add them
 - From this example: 'https://example.com/user/profile"
-```
+```dart
 void routeAndParamsAndPost() {
   RequesterAPI api = RequesterAPI.init(domain: 'https://example.com', userToken: 'asj88dfmya79yf72qtmftg2n8t6');
   api.route('user/profile')
@@ -83,7 +83,7 @@ void routeAndParamsAndPost() {
 
 Since we have a chain, you can add as many routes as you want
 - From this example: 'https://example.com/user/profile/settings?theme="dark"
-```
+```dart
 void routeAndParamsAndPut() {
   RequesterAPI api = RequesterAPI.init(domain: 'https://example.com', userToken: 'asj88dfmya79yf72qtmftg2n8t6');
   api.route('user/profile').route('settings')
@@ -94,7 +94,7 @@ void routeAndParamsAndPut() {
 
 If necessary, you can add both body and params
 - From this example: 'https://example.com/user/profile/settings?theme="dark"
-```
+```dart
 void routeAndParamsAndBodyAndPut() {
   RequesterAPI api = RequesterAPI.init(domain: 'https://example.com', userToken: 'asj88dfmya79yf72qtmftg2n8t6');
   api.route('user/profile').route('settings')
@@ -108,7 +108,7 @@ void routeAndParamsAndBodyAndPut() {
 
 If you don't want to create an object, you can use the constructor in the chain
 - From this example: 'https://example.com/user/profile/settings?theme="dark"
-```
+```dart
 void InitAndRouteAndParamsAndPut() {
   // RequesterAPI api = ;
   RequesterAPI.init(domain: 'https://example.com', userToken: 'asj88dfmya79yf72qtmftg2n8t6')
