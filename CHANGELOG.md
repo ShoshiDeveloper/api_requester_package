@@ -1,3 +1,3 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* Has main ForesAPI class, APIRequest and RequestErrorArgs.

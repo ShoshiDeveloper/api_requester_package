@@ -1,9 +1,11 @@
 library api_requester_package;
 
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-class ForesAPI {
+class RequesterAPI {
   final String domain;
   final String _userToken;
 
@@ -13,22 +15,32 @@ class ForesAPI {
   Map<String, dynamic>? _body;
   String? _params;
 
-  ForesAPI.init({required this.domain, required String userToken}) : _userToken=userToken, _dio = Dio(BaseOptions(
-    // headers: {},
-    baseUrl: domain
-  ));
+  final Function(RequestErrorArgs args)? errorListener;
 
-  ForesAPI route(String routes) {
-    _routes = routes;
+  RequesterAPI.init({required this.domain, required String userToken, this.errorListener}) : _userToken=userToken, _dio = Dio(BaseOptions(baseUrl: domain));
+
+  ///You don't need to put '/' at the beginning
+  RequesterAPI route(String routes) {
+    if (_routes == null) {
+    _routes = '/$routes';
+    } else {
+    _routes = _routes! + '/$routes';
+    }
     return this;
   }
-
-  ForesAPI setBody(Map<String, dynamic> body) {
+  
+  RequesterAPI setBody(Map<String, dynamic> body) {
     _body = body;
     return this;
   }
-  ForesAPI setParams(String params) {
-    _params = params;
+  ///You do not need to put special signs: ? and & (if you need to connect two similar elements)
+  RequesterAPI setParams(String params) {
+    // _params = params;
+    if (_params == null) {
+    _params = '?$params';
+    } else {
+    _params = _params! + '&$params';
+    }
     return this;
   }
 
@@ -39,12 +51,15 @@ class ForesAPI {
     } on DioException catch (e) {
       if (e.response == null) {
         debugPrint(e.error.toString());
+        if(errorListener != null) errorListener!(RequestErrorArgs(e.error.toString()));
         return null;
       } else if (e.response!.statusCode == 404) {
-        debugPrint('NotFoundRouteException\nRoute: ${ '${_dio.options.baseUrl}/$_routes' }');
+        debugPrint('NotFoundRouteException\nRoute: ${'${_dio.options.baseUrl}/$_routes'}');
+        if(errorListener != null) errorListener!(RequestErrorArgs('NotFoundRouteException\nRoute: ${ '${_dio.options.baseUrl}/$_routes' }'));
         return null;
       } else if (e.response!.statusCode == 500) {
-        debugPrint('InternalServerError\nRoute: ${ '${_dio.options.baseUrl}/$_routes' }\nData:${e.response!.data}');
+        debugPrint('InternalServerError\nRoute: ${'${_dio.options.baseUrl}/$_routes'}\nData:${e.response!.data}');
+        if(errorListener != null) errorListener!(RequestErrorArgs('InternalServerError\nRoute: ${ '${_dio.options.baseUrl}/$_routes' }\nData:${e.response!.data}'));
         return null;
       }
 
@@ -68,15 +83,19 @@ class ForesAPI {
     return await _request(_dio.delete('/$_routes'));
   } 
 
-  String print() {
-    // throw ForesAPIException('pizdec polniy');
-    
-    return '\n$domain/$_routes${_params != null ? '?$_params' : ''}\n_body: ${_body ?? ''}\nAccess Token: $_userToken';
+  RequesterAPI print() {
+    debugPrint('\n$domain$_routes${_params != null ? '$_params' : ''}\nBody: ${_body ?? ''}\nAccess Token: $_userToken');
+    return this;
   }
 }
 
 class APIResponse {
-  int statusCode;
-  dynamic data;
-  APIResponse({required this.statusCode, required this.data});
+  final int statusCode;
+  final dynamic data;
+  const APIResponse({required this.statusCode, required this.data});
+}
+
+class RequestErrorArgs {
+  final String message;
+  const RequestErrorArgs(this.message);
 }

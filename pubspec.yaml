@@ -1,10 +1,11 @@
 name: api_requester_package
-description: "A new Flutter package project."
+description: "This package is a simplified package for implementing requests to the server."
 version: 0.0.1
-homepage:
+homepage: https://pub.dev/packages/api_requester_package
+repository: https://github.com/ShoshiDeveloper/api_requester_package
 
 environment:
-  sdk: '>=3.2.3 <4.0.0'
+  sdk: '>=3.2.2 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
