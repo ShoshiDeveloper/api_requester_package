@@ -1,10 +1,8 @@
-This package provides minimal functionality for api requests. The package also makes it possible to build a query in the form of a chain.
+A package for creating API requests in the form of a chain.
 
 ## Features
 
-Optional use of an access token
-
-List what your package can do. Maybe include images, gifs, or videos.
+- Optional use of an access token
 
 ## Getting started
 

@@ -11,9 +11,9 @@ class RequesterAPI {
 
   final Dio _dio;
 
-  String? _routes;
+  String _routes = '';
   Map<String, dynamic>? _body;
-  String? _params;
+  String _params = '';
 
   final Function(RequestErrorArgs args)? errorListener;
 
@@ -21,11 +21,12 @@ class RequesterAPI {
 
   ///You don't need to put '/' at the beginning
   RequesterAPI route(String routes) {
-    if (_routes == null) {
-    _routes = '/$routes';
-    } else {
-    _routes = _routes! + '/$routes';
+    if (routes[0] != '/') {
+      routes = '/$routes';
     }
+
+    _routes = routes;
+
     return this;
   }
   
@@ -33,13 +34,17 @@ class RequesterAPI {
     _body = body;
     return this;
   }
+   
   ///You do not need to put special signs: ? and & (if you need to connect two similar elements)
   RequesterAPI setParams(String params) {
-    // _params = params;
-    if (_params == null) {
-    _params = '?$params';
+    if (params[0] != '?') {
+      params = '?$params';
+    }
+    
+    if (_params == '') {
+      _params = params;
     } else {
-    _params = _params! + '&$params';
+      _params += '&$params';
     }
     return this;
   }
@@ -71,20 +76,20 @@ class RequesterAPI {
   }
 
   Future<APIResponse?> get() async {
-    return await _request(_dio.get('/$_routes'));
+    return await _request(_dio.get(_routes));
   } 
   Future<APIResponse?> post() async {
-    return await _request(_dio.post('/$_routes'));
+    return await _request(_dio.post(_routes));
   }
   Future<APIResponse?> put() async {
-    return await _request(_dio.put('/$_routes'));
+    return await _request(_dio.put(_routes));
   } 
   Future<APIResponse?> delete() async {
-    return await _request(_dio.delete('/$_routes'));
+    return await _request(_dio.delete(_routes));
   } 
 
   RequesterAPI print() {
-    debugPrint('\n$domain$_routes${_params != null ? '$_params' : ''}\nBody: ${_body ?? ''}\nAccess Token: $_userToken');
+    debugPrint('\n$domain$_routes$_params\nBody: ${_body ?? ''}\nAccess Token: $_userToken');
     return this;
   }
 }

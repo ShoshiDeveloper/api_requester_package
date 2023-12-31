@@ -1,6 +1,6 @@
 name: api_requester_package
 description: "This package is a simplified package for implementing requests to the server."
-version: 0.0.1
+version: 0.0.3
 homepage: https://pub.dev/packages/api_requester_package
 repository: https://github.com/ShoshiDeveloper/api_requester_package
 
