@@ -1,13 +1,20 @@
 library api_requester_package;
 
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:api_requester_package/auth_classes/authorization.dart';
+import 'package:api_requester_package/auth_classes/basic_authorization.dart';
+import 'package:api_requester_package/auth_classes/bearer_authorization.dart';
+import 'package:api_requester_package/exceptions/not_supported_auth_exception.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class RequesterAPI {
   final String domain;
   final String _userToken;
+
+  // Authorization? _authorization;
 
   final Dio _dio;
 
@@ -18,6 +25,23 @@ class RequesterAPI {
   final Function(RequestErrorArgs args)? errorListener;
 
   RequesterAPI.init({required this.domain, required String userToken, this.errorListener}) : _userToken=userToken, _dio = Dio(BaseOptions(baseUrl: domain));
+
+  RequesterAPI setAuthorization(Authorization authorization) {
+    switch (authorization.runtimeType) {
+      case BearerAuthorization:
+        _dio.options.headers["Authorization"] = 'Bearer ${(authorization as BearerAuthorization).accessToken}';        
+        break;
+      case BasicAuthorization:
+        final username = (authorization as BasicAuthorization).username;
+        final password = authorization.password;
+        _dio.options.headers["Authorization"] = 'Basic ${(base64.encode(utf8.encode("$username:$password")))}';
+        break;
+      default:
+        throw NotSupportedAuthException();
+    }
+
+    return this;
+  }
 
   ///You don't need to put '/' at the beginning
   RequesterAPI route(String routes) {
