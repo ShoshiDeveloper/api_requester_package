@@ -1,9 +1,5 @@
 A package for creating API requests in the form of a chain.
 
-## Features
-
-- Optional use of an access token
-
 ## Getting started
 
 To work with the package, you need to use the Form API class, which provides the methods of the chain.

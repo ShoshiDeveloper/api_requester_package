@@ -12,7 +12,7 @@ import 'package:flutter/foundation.dart';
 
 class RequesterAPI {
   final String domain;
-  final String _userToken;
+  // final String _userToken;
 
   // Authorization? _authorization;
 
@@ -24,7 +24,15 @@ class RequesterAPI {
 
   final Function(RequestErrorArgs args)? errorListener;
 
-  RequesterAPI.init({required this.domain, required String userToken, this.errorListener}) : _userToken=userToken, _dio = Dio(BaseOptions(baseUrl: domain));
+  RequesterAPI.init({required this.domain, this.errorListener}) : _dio = Dio(BaseOptions(
+    baseUrl: domain,
+    validateStatus: (status) {
+        return true;
+      // switch (status) {
+      //   default:
+      // }
+    },
+  ));
 
   RequesterAPI setAuthorization(Authorization authorization) {
     switch (authorization.runtimeType) {
@@ -113,7 +121,7 @@ class RequesterAPI {
   } 
 
   RequesterAPI print() {
-    debugPrint('\n$domain$_routes$_params\nBody: ${_body ?? ''}\nAccess Token: $_userToken');
+    debugPrint('\n$domain$_routes$_params\nBody: ${_body ?? ''}');
     return this;
   }
 }

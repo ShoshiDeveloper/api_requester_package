@@ -1,3 +1,5 @@
+## 0.0.5
+* Fix init constructor and authorization
 ## 0.0.4
 * Add exception on not supported auth type
 
