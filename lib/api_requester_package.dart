@@ -108,16 +108,16 @@ class RequesterAPI {
   }
 
   Future<APIResponse?> get() async {
-    return await _request(_dio.get(_routes));
+    return await _request(_dio.get(_routes + _params));
   } 
   Future<APIResponse?> post() async {
-    return await _request(_dio.post(_routes, data: _body));
+    return await _request(_dio.post(_routes + _params, data: _body));
   }
   Future<APIResponse?> put() async {
-    return await _request(_dio.put(_routes, data: _body));
+    return await _request(_dio.put(_routes + _params, data: _body));
   } 
   Future<APIResponse?> delete() async {
-    return await _request(_dio.delete(_routes, data: _body));
+    return await _request(_dio.delete(_routes + _params, data: _body));
   } 
 
   RequesterAPI print() {
